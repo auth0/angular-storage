@@ -1,0 +1,24 @@
+{
+  "name": "angular-storage",
+  "version": "0.0.0",
+  "authors": [
+    {
+      "name": "Martin Gontovnikas",
+      "email": "martin@gon.to"
+    }
+  ],
+  "main": ["dist/angular-storage.js"],
+  "ignore": [
+    "src",
+    "test",
+    "Gruntfile.js",
+    "**/.*"
+  ],
+  "dependencies": {
+    "angular": "~1.2.21"
+  },
+  "devDependencies": {
+    "angular-mocks": "~1.2.21",
+    "angular-scenario": "~1.2.21"
+  }
+}
