@@ -62,6 +62,10 @@ Returns the saved `value` with they key `name`. If you saved an object, you get 
 
 Deletes the saved `value` with the key `name`
 
+## Usages
+
+This library is used in [auth0-angular](https://github.com/auth0/auth0-angular)
+
 ## Contributing
 
 Just clone the repo, run `npm install`, `bower install` and then `gulp` to work :).
