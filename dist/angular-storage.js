@@ -11,7 +11,7 @@ angular.module('angular-storage',
     ]);
 
 angular.module('angular-storage.storage', [])
-  .service('storage', function($window) {
+  .service('storage', ["$window", function($window) {
     if ($window.localStorage) {
       this.set = function(what, value) {
         return $window.localStorage.setItem(what, value);
@@ -34,11 +34,11 @@ angular.module('angular-storage.storage', [])
         return $cookieStore.remove(what);
       };
     }
-  });
+  }]);
 
 
 angular.module('angular-storage.store', ['angular-storage.storage'])
-  .service('store', function(storage) {
+  .service('store', ["storage", function(storage) {
 
     this.inMemoryCache = {};
 
@@ -61,7 +61,7 @@ angular.module('angular-storage.store', ['angular-storage.storage'])
     }
 
 
-  });
+  }]);
 
 
 }());
