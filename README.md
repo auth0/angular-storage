@@ -28,7 +28,7 @@ npm install angular-storage
 ## Using it
 
 ````js
-angular.module('app', [])
+angular.module('app', ['angular-storage'])
 .controller('Controller', function(store) {
   var myObj = {
     name: 'mgonto'
