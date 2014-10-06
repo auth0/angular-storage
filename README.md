@@ -14,7 +14,7 @@ A Storage done right for AngularJS.
 You have several options:
 
 ````bash
-bower install angular-storage
+bower install a0-angular-storage
 ````
 
 ````bash
