@@ -9,11 +9,13 @@ angular.module('angular-storage.store', ['angular-storage.storage'])
     };
 
     this.get = function(name) {
-      if (this.inMemoryCache[name]) {
+      if (name in this.inMemoryCache) {
         return this.inMemoryCache[name];
       }
       var saved = storage.get(name);
-      return saved ? JSON.parse(saved) : null;
+      var obj =  saved ? JSON.parse(saved) : null;
+      this.inMemoryCache[name] = obj;
+      return obj;
     };
 
     this.remove = function(name) {
