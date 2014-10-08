@@ -79,4 +79,26 @@ describe('angularStorage store', function() {
     expect(store.get('gonto')).not.to.equal(value);
   }));
 
+  it('should get objects correctly if a custom namespace is given', inject(function (store) {
+    var value = {
+      gonto: 'hola'
+    };
+    store.namespace = 'auth0';
+    store.set('gonto', value, 'customNamespace');
+    store.inMemoryCache = {};
+    expect(store.get('gonto', 'customNamespace')).to.eql(value);
+    expect(store.get('gonto', 'customNamespace')).not.to.equal(value);
+  }));
+
+  it('should get objects correctly if forced to not use a namespace', inject(function (store) {
+    var value = {
+      gonto: 'hola'
+    };
+    store.namespace = 'auth0';
+    store.set('noNamespace', value, null);
+    store.inMemoryCache = {};
+    expect(store.get('noNamespace', null)).to.eql(value);
+    expect(store.get('noNamespace', null)).not.to.equal(value);
+  }));
+
 });
