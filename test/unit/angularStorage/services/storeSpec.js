@@ -56,4 +56,27 @@ describe('angularStorage store', function() {
     expect(store.get('gonto')).not.to.equal(value);
   }));
 
+  it('should save objects correctly when a namespace is set', inject(function(store) {
+    var value = {
+      gonto: 'hola'
+    };
+    store.namespace = 'auth0';
+    store.set('gonto', value);
+    store.inMemoryCache = {};
+    expect(store.get('gonto')).to.eql(value);
+    expect(store.get('gonto')).not.to.equal(value);
+  }));
+
+  it('should save objects correctly when a namespace and namespace delimiter are set', inject(function(store) {
+    var value = {
+      gonto: 'hola'
+    };
+    store.namespace = 'auth0';
+    store.namespaceDelimiter = '-';
+    store.set('gonto', value);
+    store.inMemoryCache = {};
+    expect(store.get('gonto')).to.eql(value);
+    expect(store.get('gonto')).not.to.equal(value);
+  }));
+
 });
