@@ -10,7 +10,7 @@ angular.module('angular-storage',
       'angular-storage.store'
     ]);
 
-angular.module('angular-storage.store', ['angular-storage.storage'])
+angular.module('angular-storage.internalStore', ['angular-storage.storage'])
   .factory('InternalStore', ["storage", function(storage) {
 
     function InternalStore(namespace, delimiter) {
@@ -82,11 +82,11 @@ angular.module('angular-storage.storage', [])
   }]);
 
 
-angular.module('angular-storage.store', ['angular-storage.storage'])
-  .factory('store', ["storage", "InternalStore", function(storage, InternalStore) {
+angular.module('angular-storage.store', ['angular-storage.internalStore'])
+  .factory('store', ["InternalStore", function(InternalStore) {
 
     var store = new InternalStore();
-    store.getStoreFor = function(namespace, key) {
+    store.getNamespacedStore = function(namespace, key) {
       return new InternalStore(namespace, key);
     }
 
