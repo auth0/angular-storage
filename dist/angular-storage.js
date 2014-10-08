@@ -10,6 +10,51 @@ angular.module('angular-storage',
       'angular-storage.store'
     ]);
 
+angular.module('angular-storage.store', ['angular-storage.storage'])
+  .factory('InternalStore', ["storage", function(storage) {
+
+    function InternalStore(namespace, delimiter) {
+      this.namespace = namespace || null;
+      this.delimiter = delimiter || '.';
+      this.inMemoryCache = {};
+    }
+
+    InternalStore.prototype.getNamespacedKey = function(key) {
+      if (!this.namespace) {
+        return key;
+      } else {
+        return [this.namespace, key].join(this.delimiter);
+      }
+    }
+
+
+
+    InternalStore.prototype.set = function(name, elem) {
+      this.inMemoryCache[name] = elem;
+      storage.set(this.getNamespacedKey(name), JSON.stringify(elem));
+    };
+
+    InternalStore.prototype.get = function(name) {
+      if (name in this.inMemoryCache) {
+        return this.inMemoryCache[name];
+      }
+      var saved = storage.get(this.getNamespacedKey(name));
+      var obj =  saved ? JSON.parse(saved) : null;
+      this.inMemoryCache[name] = obj;
+      return obj;
+    };
+
+    InternalStore.prototype.remove = function(name) {
+      this.inMemoryCache[name] = null;
+      storage.remove(this.getNamespacedKey(name));
+    }
+
+    return InternalStore;
+
+
+  }]);
+
+
 angular.module('angular-storage.storage', [])
   .service('storage', ["$window", function($window) {
     if ($window.localStorage) {
@@ -38,29 +83,14 @@ angular.module('angular-storage.storage', [])
 
 
 angular.module('angular-storage.store', ['angular-storage.storage'])
-  .service('store', ["storage", function(storage) {
+  .factory('store', ["storage", "InternalStore", function(storage, InternalStore) {
 
-    this.inMemoryCache = {};
-
-    this.set = function(name, elem) {
-      this.inMemoryCache[name] = elem;
-      storage.set(name, JSON.stringify(elem));
-    };
-
-    this.get = function(name) {
-      if (name in this.inMemoryCache) {
-        return this.inMemoryCache[name];
-      }
-      var saved = storage.get(name);
-      var obj =  saved ? JSON.parse(saved) : null;
-      this.inMemoryCache[name] = obj;
-      return obj;
-    };
-
-    this.remove = function(name) {
-      this.inMemoryCache[name] = null;
-      storage.remove(name);
+    var store = new InternalStore();
+    store.getStoreFor = function(namespace, key) {
+      return new InternalStore(namespace, key);
     }
+
+    return store;
 
 
   }]);

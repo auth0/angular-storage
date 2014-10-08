@@ -48,6 +48,37 @@ angular.module('app', ['angular-storage'])
 });
 ````
 
+## Namespaced Storages
+
+You can also create namespaced storages if you want
+
+````js
+angular.module('app', ['angular-storage'])
+.factory('Auth0Store', function(store) {
+  reutrn store.getNamespacedStore('auth0');
+})
+.controller('Controller', function(Auth0Store) {
+
+  var myObj = {
+    name: 'mgonto'
+  };
+  
+  // This will be saved in localStorage as auth0.obj
+  Auth0Store.set('obj', myObj);
+
+  // This will look for auth0.obj
+  var myNewObject = Auth0Store.get('obj');
+
+  angular.equals(myNewObject, myObj); // return true
+
+  Auth0Store.remove('obj');
+
+  store.set('number', 2);
+
+  typeof(store.get('number')) === 'number'
+});
+````
+
 ## API
 
 ### store.set(name, value)
@@ -61,6 +92,10 @@ Returns the saved `value` with they key `name`. If you saved an object, you get 
 ### store.remove(name)
 
 Deletes the saved `value` with the key `name`
+
+### store.getNamespacedStore(namespace, delimiter)
+
+Returns a new `store` service that will use the `nanespace` and `delimiter` when saving and getting values like the following `namespace[delimiter]key`. For example `auth0.object` considering `auth0` as `namespace` and `.` as a `delimiter`
 
 ## Usages
 
