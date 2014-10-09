@@ -55,7 +55,7 @@ You can also create namespaced storages if you want
 ````js
 angular.module('app', ['angular-storage'])
 .factory('Auth0Store', function(store) {
-  reutrn store.getNamespacedStore('auth0');
+  return store.getNamespacedStore('auth0');
 })
 .controller('Controller', function(Auth0Store) {
 
@@ -95,7 +95,7 @@ Deletes the saved `value` with the key `name`
 
 ### store.getNamespacedStore(namespace, delimiter)
 
-Returns a new `store` service that will use the `nanespace` and `delimiter` when saving and getting values like the following `namespace[delimiter]key`. For example `auth0.object` considering `auth0` as `namespace` and `.` as a `delimiter`
+Returns a new `store` service that will use the `namespace` and `delimiter` when saving and getting values like the following `namespace[delimiter]key`. For example `auth0.object` considering `auth0` as `namespace` and `.` as a `delimiter`
 
 ## Usages
 
