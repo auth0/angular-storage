@@ -70,12 +70,6 @@ angular.module('app', ['angular-storage'])
   var myNewObject = Auth0Store.get('obj');
 
   angular.equals(myNewObject, myObj); // return true
-
-  Auth0Store.remove('obj');
-
-  store.set('number', 2);
-
-  typeof(store.get('number')) === 'number'
 });
 ````
 
