@@ -6,8 +6,8 @@ A Storage done right for AngularJS.
 
 * Uses **`localStorage` by default but if it's not available, it uses `ngCookies`**.
 * Lets you **save JS Objects**
-* If **you save an `Number`, you get an `Number`**, not a String
-* Uses a **caching system** so that if you already got a value, it won't get it from the store again.
+* If **you save a `Number`, you get a `Number`**, not a String
+* Uses a **caching system** so that if you already have a value, it won't get it from the store again.
 
 ## Installing it
 
