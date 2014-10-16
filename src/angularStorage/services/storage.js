@@ -1,5 +1,5 @@
 angular.module('angular-storage.storage', [])
-  .service('storage', function($window) {
+  .service('storage', function($window, $injector) {
     if ($window.localStorage) {
       this.set = function(what, value) {
         return $window.localStorage.setItem(what, value);
