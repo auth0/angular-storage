@@ -13,7 +13,7 @@ angular.module('angular-storage.internalStore', ['angular-storage.storage'])
       } else {
         return [this.namespace, key].join(this.delimiter);
       }
-    }
+    };
 
 
 
@@ -23,19 +23,24 @@ angular.module('angular-storage.internalStore', ['angular-storage.storage'])
     };
 
     InternalStore.prototype.get = function(name) {
+      var obj = null;
       if (name in this.inMemoryCache) {
         return this.inMemoryCache[name];
       }
       var saved = storage.get(this.getNamespacedKey(name));
-      var obj =  saved ? JSON.parse(saved) : null;
-      this.inMemoryCache[name] = obj;
+      try {
+        obj = saved ? JSON.parse(saved) : null;
+        this.inMemoryCache[name] = obj;
+      } catch(e) {
+        this.remove(name);
+      }
       return obj;
     };
 
     InternalStore.prototype.remove = function(name) {
       this.inMemoryCache[name] = null;
       storage.remove(this.getNamespacedKey(name));
-    }
+    };
 
     return InternalStore;
 
