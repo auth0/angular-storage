@@ -99,6 +99,10 @@ This library is used in [auth0-angular](https://github.com/auth0/auth0-angular)
 
 Just clone the repo, run `npm install`, `bower install` and then `gulp` to work :).
 
+## Issue Reporting
+
+If you have found a bug or if you have a feature request, please report them at this repository issues section. Please do not report security vulnerabilities on the public GitHub issue tracker. The [Responsible Disclosure Program](https://auth0.com/whitehat) details the procedure for disclosing security issues.
+
 ## License
 
 MIT
