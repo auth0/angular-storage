@@ -12,6 +12,18 @@ describe('angularStorage store', function() {
     expect(store.get('gonto')).to.equal(value);
   }));
 
+  it('should save null items correctly in localStorage', inject(function(store) {
+    store.set('gonto', null);
+    store.inMemoryCache = {};
+    expect(store.get('gonto')).to.equal(null);
+  }));
+
+  it('should save undefined items correctly in localStorage', inject(function(store) {
+    store.set('gonto', undefined);
+    store.inMemoryCache = {};
+    expect(store.get('gonto')).to.equal(undefined);
+  }));
+
   it('should delete items correctly from localStorage', inject(function(store) {
     var value = 1;
     store.set('gonto', value);

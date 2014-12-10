@@ -1,5 +1,5 @@
 angular.module('angular-storage.internalStore', ['angular-storage.storage'])
-  .factory('InternalStore', function(storage) {
+  .factory('InternalStore', function(storage, $log) {
 
     function InternalStore(namespace, delimiter) {
       this.namespace = namespace || null;
@@ -29,9 +29,16 @@ angular.module('angular-storage.internalStore', ['angular-storage.storage'])
       }
       var saved = storage.get(this.getNamespacedKey(name));
       try {
-        obj = saved ? JSON.parse(saved) : null;
+
+        if (typeof saved ==="undefined" || saved === "undefined") {
+          obj = undefined;
+        } else {
+          obj = JSON.parse(saved);
+        }
+
         this.inMemoryCache[name] = obj;
       } catch(e) {
+        $log.error("Error parsing saved value", e);
         this.remove(name);
       }
       return obj;
