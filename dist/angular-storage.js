@@ -59,7 +59,7 @@ angular.module('angular-storage.storage', [])
   .service('storage', ["$window", function($window) {
     if ($window.localStorage) {
       this.set = function(what, value) {
-        return $window.localStorage.setItem(what, value);
+        return (!what || !value) ? null : $window.localStorage.setItem(what, value);
       };
       this.get = function(what) {
         return $window.localStorage.getItem(what);
