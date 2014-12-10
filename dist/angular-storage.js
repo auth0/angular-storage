@@ -25,7 +25,7 @@ angular.module('angular-storage.internalStore', ['angular-storage.storage'])
       } else {
         return [this.namespace, key].join(this.delimiter);
       }
-    }
+    };
 
 
 
@@ -35,19 +35,24 @@ angular.module('angular-storage.internalStore', ['angular-storage.storage'])
     };
 
     InternalStore.prototype.get = function(name) {
+      var obj = null;
       if (name in this.inMemoryCache) {
         return this.inMemoryCache[name];
       }
       var saved = storage.get(this.getNamespacedKey(name));
-      var obj =  saved ? JSON.parse(saved) : null;
-      this.inMemoryCache[name] = obj;
+      try {
+        obj = saved ? JSON.parse(saved) : null;
+        this.inMemoryCache[name] = obj;
+      } catch(e) {
+        this.remove(name);
+      }
       return obj;
     };
 
     InternalStore.prototype.remove = function(name) {
       this.inMemoryCache[name] = null;
       storage.remove(this.getNamespacedKey(name));
-    }
+    };
 
     return InternalStore;
 
@@ -56,10 +61,10 @@ angular.module('angular-storage.internalStore', ['angular-storage.storage'])
 
 
 angular.module('angular-storage.storage', [])
-  .service('storage', ["$window", function($window) {
+  .service('storage', ["$window", "$injector", function($window, $injector) {
     if ($window.localStorage) {
       this.set = function(what, value) {
-        return $window.localStorage.setItem(what, value);
+        return (!what || !value) ? null : $window.localStorage.setItem(what, value);
       };
       this.get = function(what) {
         return $window.localStorage.getItem(what);
@@ -70,7 +75,7 @@ angular.module('angular-storage.storage', [])
     } else {
       var $cookieStore = $injector.get('$cookieStore');
       this.set = function(what, value) {
-        return $cookieStore.put(what, value);
+        return (!what || !value) ? null : $cookieStore.put(what, value);
       };
       this.get = function(what) {
         return $cookieStore.get(what);
