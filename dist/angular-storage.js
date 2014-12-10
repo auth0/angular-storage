@@ -70,7 +70,7 @@ angular.module('angular-storage.storage', [])
     } else {
       var $cookieStore = $injector.get('$cookieStore');
       this.set = function(what, value) {
-        return $cookieStore.put(what, value);
+        return (!what || !value) ? null : $cookieStore.put(what, value);
       };
       this.get = function(what) {
         return $cookieStore.get(what);
