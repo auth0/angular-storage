@@ -22,7 +22,7 @@ npm install angular-storage
 ````
 
 ````html
-<script type="text/javascript" src="https://rawgit.com/auth0/angular-storage/master/dist/angular-storage.js"></script>
+<script type="text/javascript" src="https://cdn.rawgit.com/auth0/angular-storage/master/dist/angular-storage.js"></script>
 ````
 
 ## Using it
