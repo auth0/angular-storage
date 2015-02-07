@@ -94,7 +94,7 @@ angular.module('angular-storage.storage', [])
   }]);
 
 
-angular.module('angular-storage.store', ['angular-storage.internalStore'])
+angular.module('angular-storage.store', ['angular-storage.internalStore', 'ngCookies'])
   .factory('store', ["InternalStore", function(InternalStore) {
 
     var store = new InternalStore();
