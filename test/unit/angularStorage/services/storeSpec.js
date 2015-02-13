@@ -82,17 +82,17 @@ describe('angularStorage store: cookie fallback', function() {
     var windowMock, $cookieStore;
     
     /* provide a mock for $window where localStorage is not defined */
-    beforeEach(module("angular-storage.store", function ($provide) {
+    beforeEach(module("ngCookies", "angular-storage.store", function ($provide) {
         windowMock = { localStorage: undefined };
         $provide.value("$window", windowMock);
+
     }));
       
-      
-    beforeEach(inject(function( _$cookieStore_) {
+    beforeEach(inject(function( _$cookieStore_) {  
         $cookieStore = _$cookieStore_;
     }));
     
-    it('should save items correctly in localStorage', inject(function(store) {
+  it('should save items correctly in localStorage', inject(function(store) {
     var value = 1;
     store.set('gonto', value);
     expect(store.get('gonto')).to.equal(value); //this line asserts that value was saved by our service
