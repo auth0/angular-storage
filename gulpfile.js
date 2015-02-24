@@ -3,6 +3,7 @@ var gulp = require('gulp'),
     concat = require('gulp-concat'),
     uglify = require('gulp-uglify'),
     rename = require('gulp-rename'),
+    jshint = require('gulp-jshint'),
     ngAnnotate = require('gulp-ng-annotate'),
     sourceFiles = [
       'src/angularStorage/angularStorage.prefix',
@@ -14,9 +15,8 @@ var gulp = require('gulp'),
     ],
     lintFiles = [
       'src/angularStorage/**/*.js',
-    ]
-
-var jshint = require('gulp-jshint');
+      'gulpfile.js'
+    ];
 
 gulp.task('lint', function() {
   return gulp.src(lintFiles)
@@ -31,7 +31,7 @@ gulp.task('build', function() {
     .pipe(gulp.dest('./dist/'))
     .pipe(uglify())
     .pipe(rename('angular-storage.min.js'))
-    .pipe(gulp.dest('./dist'))
+    .pipe(gulp.dest('./dist'));
 });
 
 /**
