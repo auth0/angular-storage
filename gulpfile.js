@@ -15,6 +15,7 @@ var gulp = require('gulp'),
     ],
     lintFiles = [
       'src/angularStorage/**/*.js',
+      'test/**/*.js',
       'gulpfile.js'
     ];
 
