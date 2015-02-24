@@ -11,7 +11,18 @@ var gulp = require('gulp'),
       'src/angularStorage/filters/**/*.js',
       'src/angularStorage/services/**/*.js',
       'src/angularStorage/angularStorage.suffix'
-    ];
+    ],
+    lintFiles = [
+      'src/angularStorage/**/*.js',
+    ]
+
+var jshint = require('gulp-jshint');
+
+gulp.task('lint', function() {
+  return gulp.src(lintFiles)
+    .pipe(jshint())
+    .pipe(jshint.reporter('jshint-stylish'));
+});
 
 gulp.task('build', function() {
   gulp.src(sourceFiles)
@@ -61,5 +72,5 @@ gulp.task('test-dist-minified', function (done) {
   }, done);
 });
 
-gulp.task('default', ['test', 'build']);
+gulp.task('default', ['lint', 'test', 'build']);
 gulp.task('dist', ['test-dist-concatenated', 'test-dist-minified']);
