@@ -15,8 +15,6 @@ angular.module('angular-storage.internalStore', ['angular-storage.storage'])
       }
     };
 
-
-
     InternalStore.prototype.set = function(name, elem) {
       this.inMemoryCache[name] = elem;
       storage.set(this.getNamespacedKey(name), JSON.stringify(elem));
@@ -30,7 +28,7 @@ angular.module('angular-storage.internalStore', ['angular-storage.storage'])
       var saved = storage.get(this.getNamespacedKey(name));
       try {
 
-        if (typeof saved ==="undefined" || saved === "undefined") {
+        if (typeof saved === 'undefined' || saved === 'undefined') {
           obj = undefined;
         } else {
           obj = JSON.parse(saved);
@@ -38,7 +36,7 @@ angular.module('angular-storage.internalStore', ['angular-storage.storage'])
 
         this.inMemoryCache[name] = obj;
       } catch(e) {
-        $log.error("Error parsing saved value", e);
+        $log.error('Error parsing saved value', e);
         this.remove(name);
       }
       return obj;
@@ -50,7 +48,5 @@ angular.module('angular-storage.internalStore', ['angular-storage.storage'])
     };
 
     return InternalStore;
-
-
   });
 

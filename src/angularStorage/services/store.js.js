@@ -4,10 +4,8 @@ angular.module('angular-storage.store', ['angular-storage.internalStore'])
     var store = new InternalStore();
     store.getNamespacedStore = function(namespace, key) {
       return new InternalStore(namespace, key);
-    }
+    };
 
     return store;
-
-
   });
 
