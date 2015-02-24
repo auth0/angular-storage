@@ -44,6 +44,16 @@ gulp.task('test', function (done) {
   }, done);
 });
 
+/**
+ * Run test once in all available browsers and exit
+ */
+gulp.task('test-all', function (done) {
+  karma.start({
+    configFile: __dirname + '/karma-src-all.conf.js',
+    singleRun: true
+  }, done);
+});
+
 gulp.task('test-debug', function (done) {
   karma.start({
     configFile: __dirname + '/karma-src.conf.js',
