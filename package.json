@@ -5,6 +5,10 @@
     "name": "Martin Gontovnikas",
     "email": "martin@gon.to"
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/auth0/angular-storage.git"
+  },
   "dependencies": {},
   "devDependencies": {
     "chai": "^1.9.1",
