@@ -83,5 +83,18 @@ gulp.task('test-dist-minified', function (done) {
   }, done);
 });
 
+/**
+ * Run code coverage tests once and exit
+ */
+gulp.task('cover', function (done) {
+  karma.start({
+    configFile: __dirname + '/karma-src.coverage.conf.js',
+    singleRun: true
+  }, function() {
+    console.log('Code coverage report created: %s', require('path').join(process.cwd(), 'reports', 'coverage'));
+    done();
+  });
+});
+
 gulp.task('default', ['lint', 'test', 'build']);
 gulp.task('dist', ['test-dist-concatenated', 'test-dist-minified']);

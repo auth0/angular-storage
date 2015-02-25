@@ -81,12 +81,45 @@ describe('angularStorage storeProvider.setStore("sessionStorage")', function () 
   });
 
   it('should save items correctly in the sessionStorage', inject(function(store, $window) {
-    var value = 44;
-    store.set('gonto', value);
+    var value = 99;
+    store.set('gonto123', value);
+    store.inMemoryCache = {};
 
-    expect(store.get('gonto')).to.equal(value);
-    expect($window.sessionStorage.getItem('gonto')).to.exist;
-    expect($window.sessionStorage.getItem('gonto')).to.equal(value.toString());
+    expect(store.get('gonto123')).to.equal(value);
+    expect($window.sessionStorage.getItem('gonto123')).to.exist;
+    expect($window.sessionStorage.getItem('gonto123')).to.equal(value.toString());
+
+    store.remove('gonto123');
+
+    expect(store.get('gonto123')).to.not.exist;
+    expect($window.sessionStorage.getItem('gonto123')).to.not.exist;
+  }));
+});
+
+describe('angularStorage storeProvider.setStore("sessionStorage")', function () {
+
+  var provider, windowMock, $cookieStore;
+
+  beforeEach(function() {
+    module('ngCookies', 'angular-storage.store', function(storeProvider, $provide) {
+      provider = storeProvider;
+      provider.setStore('sessionStorage');
+
+      windowMock = { sessionStorage: undefined };
+      $provide.value('$window', windowMock);
+    });
+  });
+
+  beforeEach(inject(function( _$cookieStore_) {
+    $cookieStore = _$cookieStore_;
+  }));
+
+  it('should fallback to cookieStorage', inject(function(store) {
+    var value = 99;
+    store.set('gonto123', value);
+
+    expect(store.get('gonto123')).to.equal(value);
+    expect($cookieStore.get('gonto123')).to.equal(JSON.stringify(value));
   }));
 });
 
