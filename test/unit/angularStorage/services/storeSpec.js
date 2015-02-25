@@ -67,69 +67,130 @@ describe('angularStorage store', function() {
     expect(store.get('gonto')).to.eql(value);
     expect(store.get('gonto')).not.to.equal(value);
   }));
+});
 
-  describe('.setStorage()', function () {
+describe('angularStorage storeProvider.setStore("sessionStorage")', function () {
 
-    var $cookieStore;
+  var provider;
 
-    beforeEach(module('ngCookies'));
+  beforeEach(function() {
+    module('angular-storage.store', function(storeProvider) {
+      provider = storeProvider;
+      provider.setStore('sessionStorage');
+    });
+  });
 
-    beforeEach(inject(function( _$cookieStore_) {
-      $cookieStore = _$cookieStore_;
-    }));
+  it('should save items correctly in the sessionStorage', inject(function(store, $window) {
+    var value = 44;
+    store.set('gonto', value);
 
-    it('should should save items correctly when the storage is changed to sessionStorage', inject(function(store, $window) {
-      var value = 11;
-      store.setStorage('sessionStorage');
-      store.set('gonto', value);
+    expect(store.get('gonto')).to.equal(value);
+    expect($window.sessionStorage.getItem('gonto')).to.exist;
+    expect($window.sessionStorage.getItem('gonto')).to.equal(value.toString());
+  }));
+});
 
-      expect(store.get('gonto')).to.equal(value);
-      expect($window.sessionStorage.getItem('gonto')).to.exist;
-      expect($window.sessionStorage.getItem('gonto')).to.equal(value.toString());
-    }));
+describe('angularStorage storeProvider.setStore("localStorage")', function () {
 
-    it('should should save items correctly when the storage is changed to localStorage', inject(function(store, $window) {
-      var value = 22;
-      store.setStorage('localStorage');
-      store.set('gonto', value);
+  var provider;
 
-      expect(store.get('gonto')).to.equal(value);
-      expect($window.localStorage.getItem('gonto')).to.exist;
-      expect($window.localStorage.getItem('gonto')).to.equal(value.toString());
-    }));
+  beforeEach(function() {
+    module('angular-storage.store', function(storeProvider) {
+      provider = storeProvider;
+      provider.setStore('localStorage');
+    });
+  });
 
-    it('should should save items correctly when the storage is changed to cookieStorage', inject(function(store) {
-      var value = 22;
-      store.setStorage('cookieStorage');
-      store.set('gonto', value);
+  it('should save items correctly in the localStorage', inject(function(store, $window) {
+    var value = 55;
+    store.set('gonto', value);
 
-      expect(store.get('gonto')).to.equal(value);
-      expect($cookieStore.get('gonto')).to.equal(JSON.stringify(value));
-    }));
+    expect(store.get('gonto')).to.equal(value);
+    expect($window.localStorage.getItem('gonto')).to.exist;
+    expect($window.localStorage.getItem('gonto')).to.equal(value.toString());
+  }));
+});
 
-    it('should not change store when param storage is not a string', inject(function(store, $window) {
-      var value = 2222;
-      store.setStorage({a:3});
-      store.set('xxx', value);
+describe('angularStorage storeProvider.setStore("cookieStorage")', function () {
 
-      expect(store.get('xxx')).to.equal(value);
-      expect($window.localStorage.getItem('xxx')).to.exist;
-      expect($window.localStorage.getItem('xxx')).to.equal(value.toString());
-    }));
+  var provider;
+  var $cookieStore;
 
-    it('should not change store when param storage is an empty string', inject(function(store, $window) {
-      var value = 2222;
-      store.setStorage('');
-      store.set('xxx', value);
+  beforeEach(function() {
+    module('ngCookies', 'angular-storage.store', function(storeProvider) {
+      provider = storeProvider;
+      provider.setStore('cookieStorage');
+    });
+  });
 
-      expect(store.get('xxx')).to.equal(value);
-      expect($window.localStorage.getItem('xxx')).to.exist;
-      expect($window.localStorage.getItem('xxx')).to.equal(value.toString());
-    }));
+  beforeEach(inject(function( _$cookieStore_) {
+    $cookieStore = _$cookieStore_;
+  }));
 
-    it('should throw an error when the store is not found', inject(function(store) {
-      expect(function() { store.setStorage('abc'); } ).to.throw(Error, /Unknown provider: abcProvider <- abc/);
-    }));
+  it('should save items correctly in the cookieStorage', inject(function(store) {
+    var value = 66;
+    store.set('gonto', value);
+
+    expect(store.get('gonto')).to.equal(value);
+    expect($cookieStore.get('gonto')).to.equal(JSON.stringify(value));
+  }));
+});
+
+describe('angularStorage storeProvider.setStore()', function () {
+
+  var provider;
+
+  beforeEach(function() {
+    module('angular-storage.store', function(storeProvider) {
+      provider = storeProvider;
+      provider.setStore();
+    });
+  });
+
+  it('should save items correctly in the localStorage', inject(function(store, $window) {
+    var value = 77;
+    store.set('gonto', value);
+
+    expect(store.get('gonto')).to.equal(value);
+    expect($window.localStorage.getItem('gonto')).to.exist;
+    expect($window.localStorage.getItem('gonto')).to.equal(value.toString());
+  }));
+});
+
+describe('angularStorage storeProvider.setStore(123)', function () {
+
+  var provider;
+
+  beforeEach(function() {
+    module('angular-storage.store', function(storeProvider) {
+      provider = storeProvider;
+      provider.setStore(123);
+    });
+  });
+
+  it('should save items correctly in the localStorage', inject(function(store, $window) {
+    var value = 77;
+    store.set('gonto', value);
+
+    expect(store.get('gonto')).to.equal(value);
+    expect($window.localStorage.getItem('gonto')).to.exist;
+    expect($window.localStorage.getItem('gonto')).to.equal(value.toString());
+  }));
+});
+
+describe('angularStorage storeProvider.setStore("abc")', function () {
+
+  var provider;
+
+  beforeEach(function() {
+    module('angular-storage.store', function(storeProvider) {
+      provider = storeProvider;
+      provider.setStore('abc');
+    });
+  });
+
+  it('should throw an error when the store is not found', function() {
+    expect(function() { inject(function(store){ store.get('a');}); } ).to.throw();
   });
 });
 
@@ -289,42 +350,53 @@ describe('angularStorage new namespaced store', function() {
     expect(newStore.get('gonto')).not.to.equal(value);
   });
 
-  describe('.setStorage()', function () {
+  it('should should save items correctly when the delimiter is set', inject(function(store, $window) {
+    var value = 111;
+    var aStore = store.getNamespacedStore('aa', 'sessionStorage', '-');
+    aStore.set('wayne', value);
+
+    expect(aStore.get('wayne')).to.equal(value);
+    expect($window.sessionStorage.getItem('aa-wayne')).to.exist;
+    expect($window.sessionStorage.getItem('aa-wayne')).to.equal(value.toString());
+    expect($window.sessionStorage.getItem('wayne')).to.not.exist;
+  }));
+
+  describe('with param storage', function () {
     var $cookieStore;
 
     beforeEach(inject(function( _$cookieStore_) {
       $cookieStore = _$cookieStore_;
     }));
 
-    it('should should save items correctly when the storage is changed to sessionStorage', inject(function( $window) {
+    it('should should save items correctly when the storage is set to sessionStorage', inject(function(store, $window) {
       var value = 111;
-      newStore.setStorage('sessionStorage');
-      newStore.set('wayne', value);
+      var sessionStore = store.getNamespacedStore('aa', 'sessionStorage');
+      sessionStore.set('wayne', value);
 
-      expect(newStore.get('wayne')).to.equal(value);
-      expect($window.sessionStorage.getItem('auth0.wayne')).to.exist;
-      expect($window.sessionStorage.getItem('auth0.wayne')).to.equal(value.toString());
+      expect(sessionStore.get('wayne')).to.equal(value);
+      expect($window.sessionStorage.getItem('aa.wayne')).to.exist;
+      expect($window.sessionStorage.getItem('aa.wayne')).to.equal(value.toString());
       expect($window.sessionStorage.getItem('wayne')).to.not.exist;
     }));
 
-    it('should should save items correctly when the storage is changed to localStorage', inject(function($window) {
+    it('should should save items correctly when the storage is set to localStorage', inject(function(store, $window) {
       var value = 222;
-      newStore.setStorage('localStorage');
-      newStore.set('wayne', value);
+      var localStore = store.getNamespacedStore('bb', 'localStorage');
+      localStore.set('wayne', value);
 
-      expect(newStore.get('wayne')).to.equal(value);
-      expect($window.localStorage.getItem('auth0.wayne')).to.exist;
-      expect($window.localStorage.getItem('auth0.wayne')).to.equal(value.toString());
+      expect(localStore.get('wayne')).to.equal(value);
+      expect($window.localStorage.getItem('bb.wayne')).to.exist;
+      expect($window.localStorage.getItem('bb.wayne')).to.equal(value.toString());
       expect($window.localStorage.getItem('wayne')).to.not.exist;
     }));
 
-    it('should should save items correctly when the storage is changed to cookieStorage', inject(function() {
-      var value = 333;
-      newStore.setStorage('cookieStorage');
-      newStore.set('wayne', value);
+    it('should should save items correctly when the storage is set to cookieStorage', inject(function(store) {
+      var value = 222;
+      var cookieStore = store.getNamespacedStore('cc', 'cookieStorage');
+      cookieStore.set('wayne', value);
 
-      expect(newStore.get('wayne')).to.equal(value);
-      expect($cookieStore.get('auth0.wayne')).to.equal(JSON.stringify(value));
+      expect(cookieStore.get('wayne')).to.equal(value);
+      expect($cookieStore.get('cc.wayne')).to.equal(JSON.stringify(value));
     }));
   });
 });

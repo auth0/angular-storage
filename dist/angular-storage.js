@@ -30,11 +30,11 @@ angular.module('angular-storage.cookieStorage', [])
 angular.module('angular-storage.internalStore', ['angular-storage.localStorage', 'angular-storage.sessionStorage'])
   .factory('InternalStore', ["$log", "$injector", function($log, $injector) {
 
-    function InternalStore(namespace, delimiter) {
+    function InternalStore(namespace, storage, delimiter) {
       this.namespace = namespace || null;
       this.delimiter = delimiter || '.';
       this.inMemoryCache = {};
-      this.storage = $injector.get('localStorage');
+      this.storage = $injector.get(storage || 'localStorage');
     }
 
     InternalStore.prototype.getNamespacedKey = function(key) {
@@ -75,14 +75,6 @@ angular.module('angular-storage.internalStore', ['angular-storage.localStorage',
     InternalStore.prototype.remove = function(name) {
       this.inMemoryCache[name] = null;
       this.storage.remove(this.getNamespacedKey(name));
-    };
-
-    InternalStore.prototype.setStorage = function(storage) {
-      if (!storage || !angular.isString(storage)) {
-        return;
-      }
-
-      this.storage = $injector.get(storage);
     };
 
     return InternalStore;
@@ -136,23 +128,40 @@ angular.module('angular-storage.sessionStorage', ['angular-storage.cookieStorage
   }]);
 
 angular.module('angular-storage.store', ['angular-storage.internalStore'])
-  .factory('store', ["InternalStore", function(InternalStore) {
+  .provider('store', function() {
 
-    var store = new InternalStore();
+    // the default storage
+    var _storage = 'localStorage';
 
     /**
-     * Returns a namespaced store
+     * Sets the storage.
      *
-     * @param {String} namespace The namespace
-     * @param {String} key The key
-     * @returns {InternalStore}
+     * @param {String} storage The storage name
      */
-    store.getNamespacedStore = function(namespace, key) {
-      return new InternalStore(namespace, key);
+    this.setStore = function(storage) {
+      if (storage && angular.isString(storage)) {
+        _storage = storage;
+      }
     };
 
-    return store;
-  }]);
+    this.$get = ["InternalStore", function(InternalStore) {
+      var store = new InternalStore(null, _storage);
+
+      /**
+       * Returns a namespaced store
+       *
+       * @param {String} namespace The namespace
+       * @param {String} storage The name of the storage service
+       * @param {String} key The key
+       * @returns {InternalStore}
+       */
+      store.getNamespacedStore = function(namespace, storage, key) {
+        return new InternalStore(namespace, storage, key);
+      };
+
+      return store;
+    }];
+  });
 
 
 }());

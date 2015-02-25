@@ -1,11 +1,11 @@
 angular.module('angular-storage.internalStore', ['angular-storage.localStorage', 'angular-storage.sessionStorage'])
   .factory('InternalStore', function($log, $injector) {
 
-    function InternalStore(namespace, delimiter) {
+    function InternalStore(namespace, storage, delimiter) {
       this.namespace = namespace || null;
       this.delimiter = delimiter || '.';
       this.inMemoryCache = {};
-      this.storage = $injector.get('localStorage');
+      this.storage = $injector.get(storage || 'localStorage');
     }
 
     InternalStore.prototype.getNamespacedKey = function(key) {
@@ -46,14 +46,6 @@ angular.module('angular-storage.internalStore', ['angular-storage.localStorage',
     InternalStore.prototype.remove = function(name) {
       this.inMemoryCache[name] = null;
       this.storage.remove(this.getNamespacedKey(name));
-    };
-
-    InternalStore.prototype.setStorage = function(storage) {
-      if (!storage || !angular.isString(storage)) {
-        return;
-      }
-
-      this.storage = $injector.get(storage);
     };
 
     return InternalStore;
