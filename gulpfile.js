@@ -88,8 +88,16 @@ gulp.task('test-dist-minified', function (done) {
  */
 gulp.task('cover', function (done) {
   karma.start({
-    configFile: __dirname + '/karma-src.coverage.conf.js',
-    singleRun: true
+    configFile: __dirname + '/karma-src.conf.js',
+    singleRun: true,
+    preprocessors: {
+      'src/**/*.js': 'coverage'
+    },
+    coverageReporter: {
+      type: 'html',
+      dir: 'reports/coverage'
+    },
+    reporters: ['mocha', 'coverage']
   }, function() {
     console.log('Code coverage report created: %s', require('path').join(process.cwd(), 'reports', 'coverage'));
     done();
