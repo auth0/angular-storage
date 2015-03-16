@@ -10,7 +10,7 @@ module.exports = function(config) {
 
     // frameworks to use
     // available frameworks: https://npmjs.org/browse/keyword/karma-adapter
-    frameworks: ['mocha', 'chai-jquery', 'jquery-1.8.3', 'sinon-chai'],
+    frameworks: ['mocha', 'chai-jquery', 'jquery-1.8.3', 'sinon-chai', 'detectBrowsers'],
 
     plugins: [
       'karma-mocha',
@@ -18,6 +18,10 @@ module.exports = function(config) {
       'karma-sinon-chai',
       'karma-chrome-launcher',
       'karma-phantomjs-launcher',
+      'karma-firefox-launcher',
+      'karma-ie-launcher',
+      'karma-safari-launcher',
+      'karma-detect-browsers',
       'karma-jquery',
       'karma-chai-jquery',
       'karma-mocha-reporter'
@@ -28,7 +32,7 @@ module.exports = function(config) {
       'bower/angular/angular.js',
       'bower/angular-mocks/angular-mocks.js',
       'bower/angular-cookies/angular-cookies.js',
-      'dist/angular-storage.min.js',
+      'src/**/*.js',
       'test/unit/**/*.js'
     ],
 
@@ -47,7 +51,7 @@ module.exports = function(config) {
     // test results reporter to use
     // possible values: 'dots', 'progress'
     // available reporters: https://npmjs.org/browse/keyword/karma-reporter
-      reporters: ['mocha'],
+    reporters: ['mocha'],
 
 
     // web server port
