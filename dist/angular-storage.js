@@ -83,7 +83,19 @@ angular.module('angular-storage.internalStore', ['angular-storage.localStorage',
 
 angular.module('angular-storage.localStorage', ['angular-storage.cookieStorage'])
   .service('localStorage', ["$window", "$injector", function ($window, $injector) {
-    if ($window.localStorage) {
+       var localStorageType = null;
+
+      if (!localStorageType) {
+        try {
+          $window.localStorage.setItem('testKey', 'test');
+          $window.localStorage.removeItem('testKey');
+          localStorageType = 1;
+        } catch (e) {
+          localStorageType = 2;
+        }
+      }
+
+    if (localStorageType===1) {
       this.set = function (what, value) {
         return $window.localStorage.setItem(what, value);
       };
