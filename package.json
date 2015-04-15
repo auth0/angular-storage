@@ -1,6 +1,7 @@
 {
   "name": "angular-storage",
   "version": "0.0.9",
+  "main": "dist/angular-storage.js",
   "author": {
     "name": "Martin Gontovnikas",
     "email": "martin@gon.to"
