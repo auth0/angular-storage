@@ -1,4 +1,31 @@
 
+0.0.10 / 2015-04-17
+===================
+
+  * Fixed private browsing error
+  * Merge pull request #23 from joshuabc/package-json-main
+  * Add `main` to package.json. Allows package to be required directly in Browserify environments.
+  * Merge pull request #20 from 4kochi/master
+  * test: add code coverage specific karma settings to the gulpfile
+  * add code coverage task `gulp cover`
+  * change store service to a provider
+  * remove storage.js file, not needed any more
+  * fix dist tests
+  * add method setStorage() to the store service
+  * add gulp task test-all to run the unit tests in all available browsers on the current system
+  * also check gulpfile.js for jshint errors
+  * fix jshint warnings
+  * add lint task to gulp to check for jshint errors/warnings
+  * changer version of angular-cookies in bower.json to fix resolution error when running bower install
+  * add field repository to package.json to fix npm warning
+  * Merge pull request #18 from kildareflare/fixCookies
+  * add newly built dist files
+  * remove ngCookie dependency and code tidy up after review
+  * add cookie dependency to bower json
+  * add missing ngCookie depednency. add missing test for cookie fallback
+  * Update and rename LICENSE to LICENSE.txt
+  * Updated CDN link
+
 0.0.6 / 2014-10-08
 ==================
 

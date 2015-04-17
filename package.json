@@ -1,6 +1,6 @@
 {
   "name": "angular-storage",
-  "version": "0.0.9",
+  "version": "0.0.10",
   "main": "dist/angular-storage.js",
   "author": {
     "name": "Martin Gontovnikas",
