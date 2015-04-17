@@ -1,6 +1,17 @@
 angular.module('angular-storage.localStorage', ['angular-storage.cookieStorage'])
   .service('localStorage', function ($window, $injector) {
-    if ($window.localStorage) {
+    var localStorageAvailable = !!$window.localStorage;
+
+    if (localStorageAvailable) {
+      try {
+        $window.localStorage.setItem('testKey', 'test');
+        $window.localStorage.removeItem('testKey');
+        localStorageAvailable = true;
+      } catch(e) {
+        localStorageAvailable = false;
+      }
+    }
+    if (localStorageAvailable) {
       this.set = function (what, value) {
         return $window.localStorage.setItem(what, value);
       };
