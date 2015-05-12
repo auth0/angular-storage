@@ -1,3 +1,19 @@
+/**
+ * Add a module for use with commonjs(WebPack)
+ * Add to your webpack.config.js with:
+ * 
+ module.exports = {
+  resolve: {
+    alias: {
+      "angular-storage": 'angular-storage/dist/angular-storage'
+    }
+  }
+ }
+ */
+if (typeof module !== "undefined" && typeof exports !== "undefined" && module.exports ===
+  exports) {
+  module.exports = 'angular-storage';
+}
 (function() {
 
 
