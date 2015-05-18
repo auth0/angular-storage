@@ -1,4 +1,10 @@
 
+0.0.11 / 2015-05-18
+===================
+
+  * Merge pull request #28 from aaronroberson/master
+  * Added support for Browserify/Webpack
+
 0.0.10 / 2015-04-17
 ===================
 
