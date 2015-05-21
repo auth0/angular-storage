@@ -69,6 +69,54 @@ describe('angularStorage store', function() {
   }));
 });
 
+describe('angularStorage storeProvider.setCaching(false)', function () {
+  var provider;
+
+  beforeEach(function() {
+    module('angular-storage.store', function(storeProvider) {
+      provider = storeProvider;
+      provider.setCaching(false);
+    });
+  });
+
+  it('should not store into internal cache', inject(function(store) {
+    var value1 = 'some value';
+    var value2 = 256;
+    store.set('key1', value1);
+    store.set('key2', value2);
+    store.remove('key1');
+
+    expect(store.inMemoryCache).to.be.empty;
+    expect(store.get('key2')).to.equal(value2);
+  }));
+
+  it('should store into internal cache in namespaced store when default caching', inject(function(store) {
+    var namespacedStore = store.getNamespacedStore('bb');
+    var value1 = 'some value';
+    var value2 = 256;
+
+    namespacedStore.set('key1', value1);
+    namespacedStore.set('key2', value2);
+
+    expect(namespacedStore.inMemoryCache).not.to.be.empty;
+    expect(namespacedStore.inMemoryCache).to.have.property('key1');
+    expect(namespacedStore.inMemoryCache).to.have.property('key2');
+  }));
+
+  it('should not store into internal cache in namespaced store when caching=false', inject(function(store) {
+    var namespacedStore = store.getNamespacedStore('bb', 'localStorage', false);
+    var value1 = 'some value';
+    var value2 = 256;
+
+    namespacedStore.set('key1', value1);
+    namespacedStore.set('key2', value2);
+
+    expect(namespacedStore.inMemoryCache).to.be.empty;
+    expect(namespacedStore.get('key1')).to.equal(value1);
+    expect(namespacedStore.get('key2')).to.equal(value2);
+  }));
+});
+
 describe('angularStorage storeProvider.setStore("sessionStorage")', function () {
 
   var provider;
@@ -385,7 +433,7 @@ describe('angularStorage new namespaced store', function() {
 
   it('should should save items correctly when the delimiter is set', inject(function(store, $window) {
     var value = 111;
-    var aStore = store.getNamespacedStore('aa', 'sessionStorage', '-');
+    var aStore = store.getNamespacedStore('aa', 'sessionStorage', true, '-');
     aStore.set('wayne', value);
 
     expect(aStore.get('wayne')).to.equal(value);
