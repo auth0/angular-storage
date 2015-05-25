@@ -30,8 +30,11 @@ angular.module('angular-storage.cookieStorage', [])
 angular.module('angular-storage.internalStore', ['angular-storage.localStorage', 'angular-storage.sessionStorage'])
   .factory('InternalStore', ["$log", "$injector", function($log, $injector) {
 
-    function InternalStore(namespace, storage, useCache, delimiter) {
+    function InternalStore(namespace, storage, delimiter, useCache) {
       this.namespace = namespace || null;
+      if (typeof useCache === 'undefined' || useCache === undefined || useCache == null) {
+        useCache = true;
+      }
       this.useCache = useCache;
       this.delimiter = delimiter || '.';
       this.inMemoryCache = {};
@@ -47,7 +50,7 @@ angular.module('angular-storage.internalStore', ['angular-storage.localStorage',
     };
 
     InternalStore.prototype.set = function(name, elem) {
-      if(this.useCache) {
+      if (this.useCache) {
         this.inMemoryCache[name] = elem;
       }
       this.storage.set(this.getNamespacedKey(name), JSON.stringify(elem));
@@ -67,7 +70,7 @@ angular.module('angular-storage.internalStore', ['angular-storage.localStorage',
           obj = JSON.parse(saved);
         }
 
-        if(this.useCache) {
+        if (this.useCache) {
           this.inMemoryCache[name] = obj;
         }
       } catch(e) {
@@ -78,7 +81,7 @@ angular.module('angular-storage.internalStore', ['angular-storage.localStorage',
     };
 
     InternalStore.prototype.remove = function(name) {
-      if(this.useCache) {
+      if (this.useCache) {
         this.inMemoryCache[name] = null;
       }
       this.storage.remove(this.getNamespacedKey(name));
@@ -171,28 +174,25 @@ angular.module('angular-storage.store', ['angular-storage.internalStore'])
      * @param {boolean} useCache Whether to use internal cache
      */
     this.setCaching = function(useCache) {
-      if(angular.isDefined(useCache)) {
+      if (angular.isDefined(useCache)) {
         _caching = useCache;
       }
     };
 
     this.$get = ["InternalStore", function(InternalStore) {
-      var store = new InternalStore(null, _storage, _caching);
+      var store = new InternalStore(null, _storage, null, _caching);
 
       /**
        * Returns a namespaced store
        *
        * @param {String} namespace The namespace
        * @param {String} storage The name of the storage service
-       * @param {boolean} useCache whether to use the internal caching
        * @param {String} delimiter The key delimiter
+       * @param {boolean} useCache whether to use the internal caching
        * @returns {InternalStore}
        */
-      store.getNamespacedStore = function(namespace, storage, useCache, delimiter) {
-        if(typeof useCache === 'undefined' || useCache === undefined) {
-          useCache = true;
-        }
-        return new InternalStore(namespace, storage, useCache, delimiter);
+      store.getNamespacedStore = function(namespace, storage, delimiter, useCache) {
+        return new InternalStore(namespace, storage, delimiter, useCache);
       };
 
       return store;

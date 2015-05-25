@@ -104,7 +104,7 @@ describe('angularStorage storeProvider.setCaching(false)', function () {
   }));
 
   it('should not store into internal cache in namespaced store when caching=false', inject(function(store) {
-    var namespacedStore = store.getNamespacedStore('bb', 'localStorage', false);
+    var namespacedStore = store.getNamespacedStore('bb', 'localStorage', null, false);
     var value1 = 'some value';
     var value2 = 256;
 
@@ -433,7 +433,7 @@ describe('angularStorage new namespaced store', function() {
 
   it('should should save items correctly when the delimiter is set', inject(function(store, $window) {
     var value = 111;
-    var aStore = store.getNamespacedStore('aa', 'sessionStorage', true, '-');
+    var aStore = store.getNamespacedStore('aa', 'sessionStorage', '-', true);
     aStore.set('wayne', value);
 
     expect(aStore.get('wayne')).to.equal(value);

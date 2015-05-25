@@ -24,28 +24,25 @@ angular.module('angular-storage.store', ['angular-storage.internalStore'])
      * @param {boolean} useCache Whether to use internal cache
      */
     this.setCaching = function(useCache) {
-      if(angular.isDefined(useCache)) {
+      if (angular.isDefined(useCache)) {
         _caching = useCache;
       }
     };
 
     this.$get = function(InternalStore) {
-      var store = new InternalStore(null, _storage, _caching);
+      var store = new InternalStore(null, _storage, null, _caching);
 
       /**
        * Returns a namespaced store
        *
        * @param {String} namespace The namespace
        * @param {String} storage The name of the storage service
-       * @param {boolean} useCache whether to use the internal caching
        * @param {String} delimiter The key delimiter
+       * @param {boolean} useCache whether to use the internal caching
        * @returns {InternalStore}
        */
-      store.getNamespacedStore = function(namespace, storage, useCache, delimiter) {
-        if(typeof useCache === 'undefined' || useCache === undefined) {
-          useCache = true;
-        }
-        return new InternalStore(namespace, storage, useCache, delimiter);
+      store.getNamespacedStore = function(namespace, storage, delimiter, useCache) {
+        return new InternalStore(namespace, storage, delimiter, useCache);
       };
 
       return store;

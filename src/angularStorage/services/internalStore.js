@@ -1,8 +1,11 @@
 angular.module('angular-storage.internalStore', ['angular-storage.localStorage', 'angular-storage.sessionStorage'])
   .factory('InternalStore', function($log, $injector) {
 
-    function InternalStore(namespace, storage, useCache, delimiter) {
+    function InternalStore(namespace, storage, delimiter, useCache) {
       this.namespace = namespace || null;
+      if (typeof useCache === 'undefined' || useCache === undefined || useCache == null) {
+        useCache = true;
+      }
       this.useCache = useCache;
       this.delimiter = delimiter || '.';
       this.inMemoryCache = {};
@@ -18,7 +21,7 @@ angular.module('angular-storage.internalStore', ['angular-storage.localStorage',
     };
 
     InternalStore.prototype.set = function(name, elem) {
-      if(this.useCache) {
+      if (this.useCache) {
         this.inMemoryCache[name] = elem;
       }
       this.storage.set(this.getNamespacedKey(name), JSON.stringify(elem));
@@ -38,7 +41,7 @@ angular.module('angular-storage.internalStore', ['angular-storage.localStorage',
           obj = JSON.parse(saved);
         }
 
-        if(this.useCache) {
+        if (this.useCache) {
           this.inMemoryCache[name] = obj;
         }
       } catch(e) {
@@ -49,7 +52,7 @@ angular.module('angular-storage.internalStore', ['angular-storage.localStorage',
     };
 
     InternalStore.prototype.remove = function(name) {
-      if(this.useCache) {
+      if (this.useCache) {
         this.inMemoryCache[name] = null;
       }
       this.storage.remove(this.getNamespacedKey(name));
