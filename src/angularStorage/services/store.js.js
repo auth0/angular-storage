@@ -24,9 +24,7 @@ angular.module('angular-storage.store', ['angular-storage.internalStore'])
      * @param {boolean} useCache Whether to use internal cache
      */
     this.setCaching = function(useCache) {
-      if (angular.isDefined(useCache)) {
-        _caching = useCache;
-      }
+      _caching = !!useCache;
     };
 
     this.$get = function(InternalStore) {

@@ -3,7 +3,7 @@ angular.module('angular-storage.internalStore', ['angular-storage.localStorage',
 
     function InternalStore(namespace, storage, delimiter, useCache) {
       this.namespace = namespace || null;
-      if (typeof useCache === 'undefined' || useCache === undefined || useCache == null) {
+      if (angular.isUndefined(useCache) || useCache == null) {
         useCache = true;
       }
       this.useCache = useCache;

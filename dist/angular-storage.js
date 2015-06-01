@@ -32,7 +32,7 @@ angular.module('angular-storage.internalStore', ['angular-storage.localStorage',
 
     function InternalStore(namespace, storage, delimiter, useCache) {
       this.namespace = namespace || null;
-      if (typeof useCache === 'undefined' || useCache === undefined || useCache == null) {
+      if (angular.isUndefined(useCache) || useCache == null) {
         useCache = true;
       }
       this.useCache = useCache;
@@ -174,9 +174,7 @@ angular.module('angular-storage.store', ['angular-storage.internalStore'])
      * @param {boolean} useCache Whether to use internal cache
      */
     this.setCaching = function(useCache) {
-      if (angular.isDefined(useCache)) {
-        _caching = useCache;
-      }
+      _caching = !!useCache;
     };
 
     this.$get = ["InternalStore", function(InternalStore) {
