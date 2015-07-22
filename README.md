@@ -4,7 +4,7 @@ A Storage done right for AngularJS.
 
 ## Key Features
 
-* Uses **`localStorage` by default but if it's not available, it uses `ngCookies`**.
+* Uses **`localStorage` or `sessionStorage` by default but if it's not available, it uses `ngCookies`**.
 * Lets you **save JS Objects**
 * If **you save a `Number`, you get a `Number`**, not a String
 * Uses a **caching system** so that if you already have a value, it won't get it from the store again.
@@ -73,7 +73,36 @@ angular.module('app', ['angular-storage'])
 });
 ````
 
+## Changing storage type
+
+```js
+angular.module('app', ['angular-storage'])
+  .config(function(storeProvider) {
+    // Store defaults to localStorage but we can set sessionStorage or cookies.
+    storeProvider.setStore('sessionStorage');
+  })
+  .controller('Controller', function(store) {
+
+  var myObj = {
+    name: 'mgonto'
+  };
+  
+  // This will be saved in sessionStorage as obj
+  store.set('obj', myObj);
+
+  // This will look for obj in sessionStorage
+  var myNewObject = store.get('obj');
+
+  angular.equals(myNewObject, myObj); // return true
+});
+```
+
+
 ## API
+
+### storeProvider.setStore(storageName) 
+
+Sets the underlying store for the `store` service. It can be `localStorage`, `sessionStorage` or `cookieStorage`. Defaults to `localStorage`
 
 ### store.set(name, value)
 
