@@ -78,7 +78,7 @@ angular.module('app', ['angular-storage'])
 ```js
 angular.module('app', ['angular-storage'])
   .config(function(storeProvider) {
-    // Store defaults to localStorage but we can set sessionStorage or cookies.
+    // Store defaults to localStorage but we can set sessionStorage or cookieStorage.
     storeProvider.setStore('sessionStorage');
   })
   .controller('Controller', function(store) {
