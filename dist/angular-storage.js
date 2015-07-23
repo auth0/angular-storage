@@ -116,7 +116,17 @@ angular.module('angular-storage.localStorage', ['angular-storage.cookieStorage']
 
 angular.module('angular-storage.sessionStorage', ['angular-storage.cookieStorage'])
   .service('sessionStorage', ["$window", "$injector", function ($window, $injector) {
-    if ($window.sessionStorage) {
+    var sessionStorageAvailable;
+
+    try {
+      $window.sessionStorage.setItem('testKey', 'test');
+      $window.sessionStorage.removeItem('testKey');
+      sessionStorageAvailable = true;
+    } catch(e) {
+      sessionStorageAvailable = false;
+    }
+
+    if (sessionStorageAvailable) {
       this.set = function (what, value) {
         return $window.sessionStorage.setItem(what, value);
       };
