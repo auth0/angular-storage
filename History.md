@@ -1,4 +1,17 @@
 
+0.0.13 / 2015-07-22
+===================
+
+  * New dist
+
+0.0.12 / 2015-07-22
+===================
+
+  * Merge pull request #36 from jercoh/detect-sessionStorage
+  * fix(sessionStorage): proper detect sessionStorage
+  * Merge pull request #31 from ako977/master
+  * Fix for #30: Proper handling of localStorage disabled check
+
 0.0.11 / 2015-05-18
 ===================
 

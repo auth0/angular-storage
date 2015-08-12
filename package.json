@@ -1,6 +1,6 @@
 {
   "name": "angular-storage",
-  "version": "0.0.11",
+  "version": "0.0.13",
   "main": "index.js",
   "author": {
     "name": "Martin Gontovnikas",
@@ -14,7 +14,7 @@
   "devDependencies": {
     "chai": "^1.9.1",
     "chai-jquery": "^1.2.3",
-    "gulp": "^3.8.11",
+    "gulp": "^3.9.0",
     "gulp-concat": "^2.3.4",
     "gulp-jshint": "^1.9.2",
     "gulp-ng-annotate": "^0.3.3",

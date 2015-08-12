@@ -93,17 +93,16 @@ angular.module('angular-storage.internalStore', ['angular-storage.localStorage',
 
 angular.module('angular-storage.localStorage', ['angular-storage.cookieStorage'])
   .service('localStorage', ["$window", "$injector", function ($window, $injector) {
-    var localStorageAvailable = !!$window.localStorage;
+    var localStorageAvailable;
 
-    if (localStorageAvailable) {
-      try {
-        $window.localStorage.setItem('testKey', 'test');
-        $window.localStorage.removeItem('testKey');
-        localStorageAvailable = true;
-      } catch(e) {
-        localStorageAvailable = false;
-      }
+    try {
+      $window.localStorage.setItem('testKey', 'test');
+      $window.localStorage.removeItem('testKey');
+      localStorageAvailable = true;
+    } catch(e) {
+      localStorageAvailable = false;
     }
+
     if (localStorageAvailable) {
       this.set = function (what, value) {
         return $window.localStorage.setItem(what, value);
@@ -127,7 +126,17 @@ angular.module('angular-storage.localStorage', ['angular-storage.cookieStorage']
 
 angular.module('angular-storage.sessionStorage', ['angular-storage.cookieStorage'])
   .service('sessionStorage', ["$window", "$injector", function ($window, $injector) {
-    if ($window.sessionStorage) {
+    var sessionStorageAvailable;
+
+    try {
+      $window.sessionStorage.setItem('testKey', 'test');
+      $window.sessionStorage.removeItem('testKey');
+      sessionStorageAvailable = true;
+    } catch(e) {
+      sessionStorageAvailable = false;
+    }
+
+    if (sessionStorageAvailable) {
       this.set = function (what, value) {
         return $window.sessionStorage.setItem(what, value);
       };
