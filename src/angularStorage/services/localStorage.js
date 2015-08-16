@@ -22,11 +22,16 @@ angular.module('angular-storage.localStorage', ['angular-storage.cookieStorage']
       this.remove = function (what) {
         return $window.localStorage.removeItem(what);
       };
+
+      this.clear = function () {
+        return $window.localStorage.clear();
+      };
     } else {
       var cookieStorage = $injector.get('cookieStorage');
 
       this.set = cookieStorage.set;
       this.get = cookieStorage.get;
       this.remove = cookieStorage.remove;
+      this.clear = cookieStorage.clear;
     }
   });

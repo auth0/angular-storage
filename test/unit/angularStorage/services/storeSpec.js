@@ -32,6 +32,18 @@ describe('angularStorage store', function() {
     expect(store.get('gonto')).to.not.exist;
   }));
 
+  it('should delete all items correctly from localStorage', inject(function(store) {
+    var value = 1;
+    store.set('gonto', value);
+    expect(store.get('gonto')).to.equal(value);
+    var otherValue = 2;
+    store.set('other_gonto', otherValue);
+    expect(store.get('other_gonto')).to.equal(otherValue);
+    store.clear();
+    expect(store.get('gonto')).to.not.exist;
+    expect(store.get('other_gonto')).to.not.exist;
+  }));
+
   it('should save objects correctly', inject(function(store) {
     var value = {
       gonto: 'hola'

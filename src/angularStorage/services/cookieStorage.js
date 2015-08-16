@@ -1,16 +1,23 @@
 angular.module('angular-storage.cookieStorage', [])
   .service('cookieStorage', function ($injector) {
-    var $cookieStore = $injector.get('$cookieStore');
+    var $cookies = $injector.get('$cookies');
 
     this.set = function (what, value) {
-      return $cookieStore.put(what, value);
+      return $cookies.put(what, value);
     };
 
     this.get = function (what) {
-      return $cookieStore.get(what);
+      return $cookies.get(what);
     };
 
     this.remove = function (what) {
-      return $cookieStore.remove(what);
+      return $cookies.remove(what);
+    };
+
+    this.clear = function () {
+      var cookies = $cookies.getAll();
+      angular.forEach(cookies, function (v, k) {
+          $cookies.remove(k);
+      });
     };
   });
