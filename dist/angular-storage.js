@@ -10,20 +10,19 @@ angular.module('angular-storage',
       'angular-storage.store'
     ]);
 
-angular.module('angular-storage.cookieStorage', [])
-  .service('cookieStorage', ["$injector", function ($injector) {
-    var $cookieStore = $injector.get('$cookieStore');
+angular.module('angular-storage.cookieStorage', ['ngCookies'])
+  .service('cookieStorage', ["$cookies", function ($cookies) {
 
     this.set = function (what, value) {
-      return $cookieStore.put(what, value);
+      return $cookies.put(what, value);
     };
 
     this.get = function (what) {
-      return $cookieStore.get(what);
+      return $cookies.get(what);
     };
 
     this.remove = function (what) {
-      return $cookieStore.remove(what);
+      return $cookies.remove(what);
     };
   }]);
 
