@@ -22,6 +22,10 @@ angular.module('angular-storage.localStorage', ['angular-storage.cookieStorage']
       this.remove = function (what) {
         return $window.localStorage.removeItem(what);
       };
+      
+      this.clear = function () {
+        $window.localStorage.clear();
+      };
     } else {
       var cookieStorage = $injector.get('cookieStorage');
 
