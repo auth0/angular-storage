@@ -99,9 +99,22 @@ describe('angularStorage storeProvider.setStore("sessionStorage")', function () 
 describe('angularStorage storeProvider.setStore("sessionStorage")', function () {
 
   var provider, windowMock, $cookieStore;
+  var mockCookieStore = {};
 
   beforeEach(function() {
     module('ngCookies', 'angular-storage.store', function(storeProvider, $provide) {
+
+      // decorator to mock the methods of the cookieStore
+      $provide.decorator('$cookieStore', function ($delegate) {
+        $delegate.put = function (key, value) {
+          mockCookieStore[key] = value;
+        };
+        $delegate.get = function (key) {
+          return mockCookieStore[key];
+        };
+        return $delegate;
+      });
+
       provider = storeProvider;
       provider.setStore('sessionStorage');
 
@@ -237,17 +250,33 @@ describe('angularStorage store: cookie fallback', function() {
     *
     */
 
-    var windowMock, $cookieStore;
+  var windowMock, $cookieStore;
+  var mockCookieStore = {};
 
-    /* provide a mock for $window where localStorage is not defined */
-    beforeEach(module('ngCookies', 'angular-storage.store', function ($provide) {
-        windowMock = { localStorage: undefined };
-        $provide.value('$window', windowMock);
-    }));
+  /* provide a mock for $window where localStorage is not defined */
+  beforeEach(module('ngCookies', 'angular-storage.store', function ($provide) {
 
-    beforeEach(inject(function( _$cookieStore_) {
-        $cookieStore = _$cookieStore_;
-    }));
+    // decorator to mock the methods of the cookieStore
+    $provide.decorator('$cookieStore', function ($delegate) {
+      $delegate.put = function (key, value) {
+        mockCookieStore[key] = value;
+      };
+      $delegate.get = function (key) {
+        return mockCookieStore[key];
+      };
+      $delegate.remove = function (key) {
+        delete mockCookieStore[key];
+      };
+      return $delegate;
+    });
+
+    windowMock = { localStorage: undefined };
+    $provide.value('$window', windowMock);
+  }));
+
+  beforeEach(inject(function (_$cookieStore_) {
+    $cookieStore = _$cookieStore_;
+  }));
 
   it('should save items correctly in localStorage', inject(function(store) {
     var value = 1;
