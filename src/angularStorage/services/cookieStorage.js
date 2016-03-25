@@ -12,4 +12,4 @@ angular.module('angular-storage.cookieStorage', [])
     this.remove = function (what) {
       return $cookies.remove(what);
     };
-  });
+  }]);

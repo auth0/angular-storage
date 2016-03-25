@@ -98,10 +98,23 @@ describe('angularStorage storeProvider.setStore("sessionStorage")', function () 
 
 describe('angularStorage storeProvider.setStore("sessionStorage")', function () {
 
-  var provider, windowMock, $cookieStore;
+  var provider, windowMock, $cookies;
+  var mockCookieStore = {};
 
   beforeEach(function() {
     module('ngCookies', 'angular-storage.store', function(storeProvider, $provide) {
+
+      // decorator to mock the methods of the cookieStore
+      $provide.decorator('$cookies', function ($delegate) {
+        $delegate.put = function (key, value) {
+          mockCookieStore[key] = value;
+        };
+        $delegate.get = function (key) {
+          return mockCookieStore[key];
+        };
+        return $delegate;
+      });
+
       provider = storeProvider;
       provider.setStore('sessionStorage');
 
@@ -110,8 +123,8 @@ describe('angularStorage storeProvider.setStore("sessionStorage")', function () 
     });
   });
 
-  beforeEach(inject(function( _$cookieStore_) {
-    $cookieStore = _$cookieStore_;
+  beforeEach(inject(function( _$cookies_) {
+    $cookies = _$cookies_;
   }));
 
   it('should fallback to cookieStorage', inject(function(store) {
@@ -119,7 +132,7 @@ describe('angularStorage storeProvider.setStore("sessionStorage")', function () 
     store.set('gonto123', value);
 
     expect(store.get('gonto123')).to.equal(value);
-    expect($cookieStore.get('gonto123')).to.equal(JSON.stringify(value));
+    expect($cookies.get('gonto123')).to.equal(JSON.stringify(value));
   }));
 });
 
@@ -147,7 +160,7 @@ describe('angularStorage storeProvider.setStore("localStorage")', function () {
 describe('angularStorage storeProvider.setStore("cookieStorage")', function () {
 
   var provider;
-  var $cookieStore;
+  var $cookies;
 
   beforeEach(function() {
     module('ngCookies', 'angular-storage.store', function(storeProvider) {
@@ -156,8 +169,8 @@ describe('angularStorage storeProvider.setStore("cookieStorage")', function () {
     });
   });
 
-  beforeEach(inject(function( _$cookieStore_) {
-    $cookieStore = _$cookieStore_;
+  beforeEach(inject(function( _$cookies_) {
+    $cookies = _$cookies_;
   }));
 
   it('should save items correctly in the cookieStorage', inject(function(store) {
@@ -165,7 +178,7 @@ describe('angularStorage storeProvider.setStore("cookieStorage")', function () {
     store.set('gonto', value);
 
     expect(store.get('gonto')).to.equal(value);
-    expect($cookieStore.get('gonto')).to.equal(JSON.stringify(value));
+    expect($cookies.get('gonto')).to.equal(JSON.stringify(value));
   }));
 });
 
@@ -237,37 +250,53 @@ describe('angularStorage store: cookie fallback', function() {
     *
     */
 
-    var windowMock, $cookieStore;
+  var windowMock, $cookies;
+  var mockCookieStore = {};
 
-    /* provide a mock for $window where localStorage is not defined */
-    beforeEach(module('ngCookies', 'angular-storage.store', function ($provide) {
-        windowMock = { localStorage: undefined };
-        $provide.value('$window', windowMock);
-    }));
+  /* provide a mock for $window where localStorage is not defined */
+  beforeEach(module('ngCookies', 'angular-storage.store', function ($provide) {
 
-    beforeEach(inject(function( _$cookieStore_) {
-        $cookieStore = _$cookieStore_;
-    }));
+    // decorator to mock the methods of the cookieStore
+    $provide.decorator('$cookies', function ($delegate) {
+      $delegate.put = function (key, value) {
+        mockCookieStore[key] = value;
+      };
+      $delegate.get = function (key) {
+        return mockCookieStore[key];
+      };
+      $delegate.remove = function (key) {
+        delete mockCookieStore[key];
+      };
+      return $delegate;
+    });
+
+    windowMock = { localStorage: undefined };
+    $provide.value('$window', windowMock);
+  }));
+
+  beforeEach(inject(function (_$cookies_) {
+    $cookies = _$cookies_;
+  }));
 
   it('should save items correctly in localStorage', inject(function(store) {
     var value = 1;
     store.set('gonto', value);
     expect(store.get('gonto')).to.equal(value); //this line asserts that value was saved by our service
-    expect($cookieStore.get('gonto')).to.equal(JSON.stringify(value)); //this line asserts that cookie store was used
+    expect($cookies.get('gonto')).to.equal(JSON.stringify(value)); //this line asserts that cookie store was used
   }));
 
   it('should save null items correctly in localStorage', inject(function(store) {
     store.set('gonto', null);
     store.inMemoryCache = {};
     expect(store.get('gonto')).to.equal(null);
-    expect($cookieStore.get('gonto')).to.equal(JSON.stringify(null));
+    expect($cookies.get('gonto')).to.equal(JSON.stringify(null));
   }));
 
   it('should save undefined items correctly in localStorage', inject(function(store) {
     store.set('gonto', undefined);
     store.inMemoryCache = {};
     expect(store.get('gonto')).to.equal(undefined);
-    expect($cookieStore.get('gonto')).to.equal(JSON.stringify(undefined));
+    expect($cookies.get('gonto')).to.equal(JSON.stringify(undefined));
   }));
 
   it('should delete items correctly from localStorage', inject(function(store) {
@@ -276,7 +305,7 @@ describe('angularStorage store: cookie fallback', function() {
     expect(store.get('gonto')).to.equal(value);
     store.remove('gonto');
     expect(store.get('gonto')).to.not.exist;
-    expect($cookieStore.get('gonto')).to.not.exist;
+    expect($cookies.get('gonto')).to.not.exist;
   }));
 
   it('should save objects correctly', inject(function(store) {
@@ -293,7 +322,7 @@ describe('angularStorage store: cookie fallback', function() {
     };
     store.set('gonto', value);
     expect(store.get('gonto')).to.eql(value);
-    expect($cookieStore.get('gonto')).to.equal(JSON.stringify(value));
+    expect($cookies.get('gonto')).to.equal(JSON.stringify(value));
   }));
 
   it('should save objects correctly without cache', inject(function(store) {
@@ -314,7 +343,7 @@ describe('angularStorage store: cookie fallback', function() {
     store.inMemoryCache = {};
     expect(store.get('gonto')).to.eql(value);
     expect(store.get('gonto')).not.to.equal(value);
-    expect($cookieStore.get('gonto')).to.eql(JSON.stringify(value));
+    expect($cookies.get('gonto')).to.eql(JSON.stringify(value));
 
   }));
 
@@ -395,10 +424,10 @@ describe('angularStorage new namespaced store', function() {
   }));
 
   describe('with param storage', function () {
-    var $cookieStore;
+    var $cookies;
 
-    beforeEach(inject(function( _$cookieStore_) {
-      $cookieStore = _$cookieStore_;
+    beforeEach(inject(function( _$cookies_) {
+      $cookies = _$cookies_;
     }));
 
     it('should should save items correctly when the storage is set to sessionStorage', inject(function(store, $window) {
@@ -429,7 +458,7 @@ describe('angularStorage new namespaced store', function() {
       cookieStore.set('wayne', value);
 
       expect(cookieStore.get('wayne')).to.equal(value);
-      expect($cookieStore.get('cc.wayne')).to.equal(JSON.stringify(value));
+      expect($cookies.get('cc.wayne')).to.equal(JSON.stringify(value));
     }));
   });
 });
