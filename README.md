@@ -1,4 +1,4 @@
-# angular-storage
+# angular-storage [![Build Status](https://secure.travis-ci.org/auth0/angular-storage.svg?branch=master)](https://travis-ci.org/auth0/angular-storage)
 
 A Storage done right for AngularJS.
 
@@ -62,7 +62,7 @@ angular.module('app', ['angular-storage'])
   var myObj = {
     name: 'mgonto'
   };
-  
+
   // This will be saved in localStorage as auth0.obj
   Auth0Store.set('obj', myObj);
 
@@ -86,7 +86,7 @@ angular.module('app', ['angular-storage'])
   var myObj = {
     name: 'mgonto'
   };
-  
+
   // This will be saved in sessionStorage as obj
   store.set('obj', myObj);
 
@@ -100,7 +100,7 @@ angular.module('app', ['angular-storage'])
 
 ## API
 
-### storeProvider.setStore(storageName) 
+### storeProvider.setStore(storageName)
 
 Sets the underlying store for the `store` service. It can be `localStorage`, `sessionStorage` or `cookieStorage`. Defaults to `localStorage`
 
