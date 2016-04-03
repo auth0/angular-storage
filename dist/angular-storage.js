@@ -10,7 +10,7 @@ angular.module('angular-storage',
       'angular-storage.store'
     ]);
 
-angular.module('angular-storage.cookieStorage', ['ngCookies'])
+angular.module('angular-storage.cookieStorage', [])
   .service('cookieStorage', ["$cookies", function ($cookies) {
 
     this.set = function (what, value) {
@@ -113,6 +113,10 @@ angular.module('angular-storage.localStorage', ['angular-storage.cookieStorage']
 
       this.remove = function (what) {
         return $window.localStorage.removeItem(what);
+      };
+      
+      this.clear = function () {
+        $window.localStorage.clear();
       };
     } else {
       var cookieStorage = $injector.get('cookieStorage');
