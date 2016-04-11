@@ -21,6 +21,10 @@ bower install a0-angular-storage
 npm install angular-storage
 ````
 
+````bash
+meteor add auth0:angular-storage
+````
+
 ````html
 <script type="text/javascript" src="https://cdn.rawgit.com/auth0/angular-storage/master/dist/angular-storage.js"></script>
 ````
