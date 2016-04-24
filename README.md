@@ -29,7 +29,7 @@ npm install angular-storage
 
 ````js
 angular.module('app', ['angular-storage'])
-.controller('Controller', function(store) {
+.controller('Controller', function($angularStorage) {
   var myObj = {
     name: 'mgonto'
   };
@@ -54,8 +54,8 @@ You can also create namespaced storages if you want
 
 ````js
 angular.module('app', ['angular-storage'])
-.factory('Auth0Store', function(store) {
-  return store.getNamespacedStore('auth0');
+.factory('Auth0Store', function($angularStorage) {
+  return $angularStorage.getNamespacedStore('auth0');
 })
 .controller('Controller', function(Auth0Store) {
 
@@ -77,21 +77,21 @@ angular.module('app', ['angular-storage'])
 
 ```js
 angular.module('app', ['angular-storage'])
-  .config(function(storeProvider) {
+  .config(function($angularStorageProvider) {
     // Store defaults to localStorage but we can set sessionStorage or cookieStorage.
     storeProvider.setStore('sessionStorage');
   })
-  .controller('Controller', function(store) {
+  .controller('Controller', function($angularStorage) {
 
   var myObj = {
     name: 'mgonto'
   };
 
   // This will be saved in sessionStorage as obj
-  store.set('obj', myObj);
+  $angularStorage.set('obj', myObj);
 
   // This will look for obj in sessionStorage
-  var myNewObject = store.get('obj');
+  var myNewObject = $angularStorage.get('obj');
 
   angular.equals(myNewObject, myObj); // return true
 });
@@ -100,25 +100,25 @@ angular.module('app', ['angular-storage'])
 
 ## API
 
-### storeProvider.setStore(storageName)
+### $angularStorageProvider.setStore(storageName)
 
-Sets the underlying store for the `store` service. It can be `localStorage`, `sessionStorage` or `cookieStorage`. Defaults to `localStorage`
+Sets the underlying store for the `$angularStorage` service. It can be `localStorage`, `sessionStorage` or `cookieStorage`. Defaults to `localStorage`
 
 ### store.set(name, value)
 
 Sets a new `value` to the storage with the key `name`. It can be any object.
 
-### store.get(name)
+### $angularStorage.get(name)
 
 Returns the saved `value` with they key `name`. If you saved an object, you get an object.
 
-### store.remove(name)
+### $angularStorage.remove(name)
 
 Deletes the saved `value` with the key `name`
 
-### store.getNamespacedStore(namespace, delimiter)
+### $angularStorage.getNamespacedStore(namespace, delimiter)
 
-Returns a new `store` service that will use the `namespace` and `delimiter` when saving and getting values like the following `namespace[delimiter]key`. For example `auth0.object` considering `auth0` as `namespace` and `.` as a `delimiter`
+Returns a new `$angularStorage` service that will use the `namespace` and `delimiter` when saving and getting values like the following `namespace[delimiter]key`. For example `auth0.object` considering `auth0` as `namespace` and `.` as a `delimiter`
 
 ## Usages
 
