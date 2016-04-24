@@ -17,7 +17,7 @@ describe('angularStorage', function() {
     dependencies = module.requires;
   });
 
-  it('should load store module', function() {
+  it('should load $angularStorage module', function() {
     expect(hasModule('angular-storage.store')).to.be.ok;
   });
 
