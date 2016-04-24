@@ -34,17 +34,17 @@ angular.module('app', ['angular-storage'])
     name: 'mgonto'
   };
 
-  store.set('obj', myObj);
+  $angularStorage.set('obj', myObj);
 
-  var myNewObject = store.get('obj');
+  var myNewObject = $angularStorage.get('obj');
 
   angular.equals(myNewObject, myObj); // return true
 
-  store.remove('obj');
+  $angularStorage.remove('obj');
 
-  store.set('number', 2);
+  $angularStorage.set('number', 2);
 
-  typeof(store.get('number')) === 'number'
+  typeof($angularStorage.get('number')) === 'number'
 });
 ````
 
@@ -104,7 +104,7 @@ angular.module('app', ['angular-storage'])
 
 Sets the underlying store for the `$angularStorage` service. It can be `localStorage`, `sessionStorage` or `cookieStorage`. Defaults to `localStorage`
 
-### store.set(name, value)
+### $angularStorage.set(name, value)
 
 Sets a new `value` to the storage with the key `name`. It can be any object.
 
