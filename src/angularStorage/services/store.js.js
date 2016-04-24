@@ -1,5 +1,5 @@
 angular.module('angular-storage.store', ['angular-storage.internalStore'])
-  .provider('store', function() {
+  .provider('$angularStorage', function() {
 
     // the default storage
     var _storage = 'localStorage';
