@@ -210,4 +210,4 @@ angular.module('angular-storage.store', ['angular-storage.internalStore'])
   });
 
 
-}());
+})();
