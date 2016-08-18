@@ -1,5 +1,5 @@
 angular.module('angular-storage.cookieStorage', [])
-  .service('cookieStorage', ["$cookies", function ($cookies) {
+  .service('cookieStorage', ['$cookies', function ($cookies) {
 
     this.set = function (what, value) {
       return $cookies.put(what, value);

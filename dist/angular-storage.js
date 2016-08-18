@@ -11,7 +11,7 @@ angular.module('angular-storage',
     ]);
 
 angular.module('angular-storage.cookieStorage', [])
-  .service('cookieStorage', ["$cookies", function ($cookies) {
+  .service('cookieStorage', ['$cookies', function ($cookies) {
 
     this.set = function (what, value) {
       return $cookies.put(what, value);
@@ -31,7 +31,7 @@ angular.module('angular-storage.internalStore', ['angular-storage.localStorage',
 
     function InternalStore(namespace, storage, delimiter, useCache) {
       this.namespace = namespace || null;
-      if (angular.isUndefined(useCache) || useCache == null) {
+      if (angular.isUndefined(useCache) || useCache === null) {
         useCache = true;
       }
       this.useCache = useCache;

@@ -1,5 +1,6 @@
 var gulp = require('gulp'),
-    karma = require('karma').server,
+    //karma = require('karma').server,
+    Server = require('karma').Server;
     concat = require('gulp-concat'),
     uglify = require('gulp-uglify'),
     rename = require('gulp-rename'),
@@ -39,55 +40,55 @@ gulp.task('build', function() {
  * Run test once and exit
  */
 gulp.task('test', function (done) {
-  karma.start({
+  new Server({
     configFile: __dirname + '/karma-src.conf.js',
     singleRun: true
-  }, done);
+  }, done).start();
 });
 
 /**
  * Run test once in all available browsers and exit
  */
 gulp.task('test-all', function (done) {
-  karma.start({
+  new Server({
     configFile: __dirname + '/karma-src-all.conf.js',
     singleRun: true
-  }, done);
+  }, done).start();
 });
 
 gulp.task('test-debug', function (done) {
-  karma.start({
+  new Server({
     configFile: __dirname + '/karma-src.conf.js',
     singleRun: false,
     autoWatch: true
-  }, done);
+  }, done).start();
 });
 
 /**
  * Run test once and exit
  */
 gulp.task('test-dist-concatenated', function (done) {
-  karma.start({
+  new Server({
     configFile: __dirname + '/karma-dist-concatenated.conf.js',
     singleRun: true
-  }, done);
+  }, done).start();
 });
 
 /**
  * Run test once and exit
  */
 gulp.task('test-dist-minified', function (done) {
-  karma.start({
+  new Server({
     configFile: __dirname + '/karma-dist-minified.conf.js',
     singleRun: true
-  }, done);
+  }, done).start();
 });
 
 /**
  * Run code coverage tests once and exit
  */
 gulp.task('cover', function (done) {
-  karma.start({
+  new Server({
     configFile: __dirname + '/karma-src.conf.js',
     singleRun: true,
     preprocessors: {
