@@ -12,4 +12,11 @@ angular.module('angular-storage.cookieStorage', [])
     this.remove = function (what) {
       return $cookies.remove(what);
     };
+
+    this.clear = function () {
+      var cookies = $cookies.getAll();
+      angular.forEach(cookies, function (v, k) {
+        $cookies.remove(k);
+      });
+    };
   }]);

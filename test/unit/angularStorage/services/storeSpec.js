@@ -32,6 +32,18 @@ describe('angularStorage store', function() {
     expect(store.get('gonto')).to.not.exist;
   }));
 
+  it('should delete all items correctly from localStorage', inject(function(store) {
+    var value = 1;
+    store.set('gonto', value);
+    expect(store.get('gonto')).to.equal(value);
+    var otherValue = 2;
+    store.set('other_gonto', otherValue);
+    expect(store.get('other_gonto')).to.equal(otherValue);
+    store.clear();
+    expect(store.get('gonto')).to.not.exist;
+    expect(store.get('other_gonto')).to.not.exist;
+  }));
+
   it('should save objects correctly', inject(function(store) {
     var value = {
       gonto: 'hola'
@@ -315,6 +327,9 @@ describe('angularStorage store: cookie fallback', function() {
       $delegate.remove = function (key) {
         delete mockCookieStore[key];
       };
+      $delegate.getAll = function () {
+        return mockCookieStore;
+      };
       return $delegate;
     });
 
@@ -354,6 +369,22 @@ describe('angularStorage store: cookie fallback', function() {
     store.remove('gonto');
     expect(store.get('gonto')).to.not.exist;
     expect($cookies.get('gonto')).to.not.exist;
+  }));
+
+  it('should delete all items correctly from localStorage', inject(function(store) {
+    var value = 1;
+    store.set('gonto', value);
+    expect(store.get('gonto')).to.equal(value);
+    expect($cookies.get('gonto')).to.equal(JSON.stringify(value));
+    var otherValue = 2;
+    store.set('other_gonto', otherValue);
+    expect(store.get('other_gonto')).to.equal(otherValue);
+    expect($cookies.get('other_gonto')).to.equal(JSON.stringify(otherValue));
+    store.clear();
+    expect(store.get('gonto')).to.not.exist;
+    expect($cookies.get('gonto')).to.not.exist;
+    expect(store.get('other_gonto')).to.not.exist;
+    expect($cookies.get('other_gonto')).to.not.exist;
   }));
 
   it('should save objects correctly', inject(function(store) {
@@ -423,6 +454,18 @@ describe('angularStorage new namespaced store', function() {
     newStore.remove('gonto');
     expect(newStore.get('gonto')).to.not.exist;
   });
+
+  it('should delete all items correctly from localStorage', inject(function() {
+    var value = 1;
+    newStore.set('gonto', value);
+    expect(newStore.get('gonto')).to.equal(value);
+    var otherValue = 2;
+    newStore.set('other_gonto', otherValue);
+    expect(newStore.get('other_gonto')).to.equal(otherValue);
+    newStore.clear();
+    expect(newStore.get('gonto')).to.not.exist;
+    expect(newStore.get('other_gonto')).to.not.exist;
+  }));
 
   it('should save objects correctly', function() {
     var value = {

@@ -24,6 +24,13 @@ angular.module('angular-storage.cookieStorage', [])
     this.remove = function (what) {
       return $cookies.remove(what);
     };
+
+    this.clear = function () {
+      var cookies = $cookies.getAll();
+      angular.forEach(cookies, function (v, k) {
+        $cookies.remove(k);
+      });
+    };
   }]);
 
 angular.module('angular-storage.internalStore', ['angular-storage.localStorage', 'angular-storage.sessionStorage'])
@@ -86,6 +93,11 @@ angular.module('angular-storage.internalStore', ['angular-storage.localStorage',
       this.storage.remove(this.getNamespacedKey(name));
     };
 
+    InternalStore.prototype.clear = function() {
+      this.inMemoryCache = {};
+      this.storage.clear();
+    };
+
     return InternalStore;
   }]);
 
@@ -114,16 +126,22 @@ angular.module('angular-storage.localStorage', ['angular-storage.cookieStorage']
       this.remove = function (what) {
         return $window.localStorage.removeItem(what);
       };
-      
+
       this.clear = function () {
         $window.localStorage.clear();
       };
+
+      this.clear = function () {
+        return $window.localStorage.clear();
+      };
+
     } else {
       var cookieStorage = $injector.get('cookieStorage');
 
       this.set = cookieStorage.set;
       this.get = cookieStorage.get;
       this.remove = cookieStorage.remove;
+      this.clear = cookieStorage.clear;
     }
   }]);
 
@@ -151,12 +169,17 @@ angular.module('angular-storage.sessionStorage', ['angular-storage.cookieStorage
       this.remove = function (what) {
         return $window.sessionStorage.removeItem(what);
       };
+
+      this.clear = function () {
+        return $window.sessionStorage.clear();
+      };
     } else {
       var cookieStorage = $injector.get('cookieStorage');
 
       this.set = cookieStorage.set;
       this.get = cookieStorage.get;
       this.remove = cookieStorage.remove;
+      this.clear = cookieStorage.clear;
     }
   }]);
 

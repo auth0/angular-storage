@@ -116,6 +116,10 @@ Returns the saved `value` with they key `name`. If you saved an object, you get 
 
 Deletes the saved `value` with the key `name`
 
+### store.clear()
+
+Deletes all data from the storage.
+
 ### store.getNamespacedStore(namespace, delimiter)
 
 Returns a new `store` service that will use the `namespace` and `delimiter` when saving and getting values like the following `namespace[delimiter]key`. For example `auth0.object` considering `auth0` as `namespace` and `.` as a `delimiter`
