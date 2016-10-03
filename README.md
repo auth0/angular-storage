@@ -11,7 +11,7 @@ A Storage done right for AngularJS.
 
 ## Installing it
 
-You have several options:
+You have several options: Install with either bower or npm and link to the installed file from html using script tag.
 
 ````bash
 bower install a0-angular-storage
@@ -19,10 +19,6 @@ bower install a0-angular-storage
 
 ````bash
 npm install angular-storage
-````
-
-````html
-<script type="text/javascript" src="https://cdn.rawgit.com/auth0/angular-storage/master/dist/angular-storage.js"></script>
 ````
 
 ## Using it
