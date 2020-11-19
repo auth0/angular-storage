@@ -2,6 +2,12 @@
 
 A Storage done right for AngularJS.
 
+## Sponsor
+
+|||
+|-|-|
+|![auth0 logo](https://user-images.githubusercontent.com/83319/31722733-de95bbde-b3ea-11e7-96bf-4f4e8f915588.png)|If you want to quickly add secure token-based authentication to your Angular projects, feel free to check Auth0's Angular SDK and free plan at [auth0.com/developers](https://auth0.com/developers?utm_source=GHsponsor&utm_medium=GHsponsor&utm_campaign=angular-jwt&utm_content=auth)|
+
 ## Key Features
 
 * Uses **`localStorage` or `sessionStorage` by default but if it's not available, it uses `ngCookies`**.
